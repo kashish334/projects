@@ -1,0 +1,12 @@
+streamlit
+random
+pickle
+tensorflow
+numpy 
+nltk
+webbrowser
+datetime
+string
+pickle
+sklearn
+sentence-transformers
