@@ -1,0 +1,15 @@
+streamlit
+pickle
+nltk
+faiss
+numpy
+pandas
+nltk
+sklearn
+tensorflow
+sentence_transformers
+google-generativeai
+pandas
+os
+datetime
+python-dotenv
