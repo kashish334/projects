@@ -1,6 +1,6 @@
 streamlit
 pickle
-nltk
+nltk==3.9.1
 faiss-cpu
 numpy
 pandas
