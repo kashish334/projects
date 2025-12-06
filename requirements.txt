@@ -8,6 +8,5 @@ tensorflow
 sentence_transformers
 google-generativeai
 pandas
-os
 datetime
 python-dotenv
