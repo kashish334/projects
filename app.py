@@ -71,7 +71,7 @@ if not gemini_api_key:
     st.error("Gemini API key not found! Check .env file.")
     st.stop()
 genai.configure(api_key=gemini_api_key)
-model = genai.GenerativeModel("gemini-pro-latest")
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 def summarize_with_gemini(answer_text):
     prompt = (
