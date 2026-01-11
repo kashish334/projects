@@ -5,7 +5,6 @@ import faiss
 import numpy as np
 from nltk.stem import WordNetLemmatizer
 import google.generativeai as genai
-from sklearn.preprocessing import normalize
 from tensorflow.keras.models import load_model
 from sentence_transformers import SentenceTransformer
 import pandas as pd
@@ -42,23 +41,32 @@ for index, row in data.iterrows():
 
 @st.cache_resource
 def load_embed_model():
+    # Only loads the model once, keeping it in memory
     return SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
 
-@st.cache_data
-def load_embeddings(qa_questions):
-    embed_model = load_embed_model()
-    return embed_model.encode(qa_questions,batch_size=32, show_progress_bar=False)
+@st.cache_resource
+def load_faiss_components():
+    """Loads the pre-calculated FAISS index and QA answers list."""
+    try:
+        # Load the saved index
+        index = faiss.read_index("faiss_index.bin")
+        
+        # Load the saved QA Answers list
+        with open("qa_answers.pkl", "rb") as f:
+            qa_answers_loaded = pickle.load(f)
+            
+        return index, qa_answers_loaded
+    
+    except FileNotFoundError as e:
+        st.error(f"Required file not found: {e.filename}. Please run 'python create_index.py' first.")
+        st.stop()
+    except Exception as e:
+        st.error(f"Error loading FAISS components: {e}")
+        st.stop()
 
+# Load the components once at startup
+index, qa_answers = load_faiss_components()
 embed_model = load_embed_model()
-qa_embeddings = np.array(load_embeddings(qa_questions)).astype('float32')
-qa_embeddings = normalize(qa_embeddings)
-qa_embeddings = np.array(qa_embeddings).astype('float32')
-if len(qa_embeddings.shape) == 1:
-    qa_embeddings = qa_embeddings.reshape(1, -1)
-faiss.normalize_L2(qa_embeddings)
-
-index = faiss.IndexFlatIP(qa_embeddings.shape[1])
-index.add(qa_embeddings)
 
 def semantic_search(user_question, top_k=3):
     query = load_embed_model().encode([user_question]).astype('float32')
@@ -67,11 +75,12 @@ def semantic_search(user_question, top_k=3):
     return [qa_answers[i] for i in indices[0]]
 
 gemini_api_key = os.getenv("GEMINI_API_KEY")
+st.write("API key loaded:", bool(api_key))
 if not gemini_api_key:
     st.error("Gemini API key not found! Check .env file.")
     st.stop()
 genai.configure(api_key=gemini_api_key)
-model = genai.GenerativeModel("gemini-pro-latest")
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 def summarize_with_gemini(answer_text):
     prompt = (
