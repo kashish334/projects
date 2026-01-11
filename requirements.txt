@@ -1,5 +1,4 @@
 streamlit
-pickle
 nltk==3.9.1
 faiss-cpu
 numpy
@@ -9,6 +8,6 @@ tensorflow
 sentence_transformers
 google-generativeai
 pandas
-os
 datetime
 python-dotenv
+tf-keras
