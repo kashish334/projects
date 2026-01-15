@@ -80,12 +80,12 @@ def semantic_search(user_question, top_k=3):
     distances, indices = index.search(query, k=top_k)
     return [qa_answers[i] for i in indices[0]]
 
-gemini_api_key = os.getenv("GEMINI_API_KEY")
-st.write("API key loaded:", bool(gemini_api_key))
+api_key = st.secrets["GEMINI_API_KEY"]
+st.write("API key loaded:", bool(api_key))
 if not gemini_api_key:
     st.error("Gemini API key not found! Check .env file.")
     st.stop()
-genai.configure(api_key=gemini_api_key)
+genai.configure(api_key=api_key)
 
 model = genai.GenerativeModel("gemini-2.5-flash")
 
