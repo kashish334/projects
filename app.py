@@ -82,7 +82,7 @@ def semantic_search(user_question, top_k=3):
 
 api_key = st.secrets["GEMINI_API_KEY"]
 st.write("API key loaded:", bool(api_key))
-if not gemini_api_key:
+if not api_key:
     st.error("Gemini API key not found! Check .env file.")
     st.stop()
 genai.configure(api_key=api_key)
