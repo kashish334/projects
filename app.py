@@ -10,6 +10,9 @@ import pandas as pd
 import os
 import datetime
 from dotenv import load_dotenv
+from download_assets import download_files
+
+download_files()
 load_dotenv()
 
 for resource in ["punkt", "wordnet", "omw-1.4"]:
@@ -19,9 +22,13 @@ for resource in ["punkt", "wordnet", "omw-1.4"]:
         nltk.download(resource)
 
 lemmatizer = WordNetLemmatizer()
-model = load_model("chatbot_model.h5")
-labels = pickle.load(open("label_encoder.pkl", "rb"))
-tfidf = pickle.load(open("tfidf_vectorizer.pkl", "rb"))
+
+@st.cache_resource
+def load_resources():
+    model = load_model("chatbot_model.h5")
+    labels = pickle.load(open("label_encoder.pkl", "rb"))
+    tfidf = pickle.load(open("tfidf_vectorizer.pkl", "rb"))
+    return model, labels, tfidf
 
 all_df = []
 for main, subfolders, filename in os.walk("data"):
