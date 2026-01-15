@@ -2,7 +2,6 @@ import streamlit as st
 import pickle
 import nltk
 import faiss
-import numpy as np
 from nltk.stem import WordNetLemmatizer
 import google.generativeai as genai
 from tensorflow.keras.models import load_model
@@ -75,7 +74,7 @@ def semantic_search(user_question, top_k=3):
     return [qa_answers[i] for i in indices[0]]
 
 gemini_api_key = os.getenv("GEMINI_API_KEY")
-st.write("API key loaded:", bool(api_key))
+st.write("API key loaded:", bool(gemini_api_key))
 if not gemini_api_key:
     st.error("Gemini API key not found! Check .env file.")
     st.stop()
@@ -125,7 +124,6 @@ def process_user_input():
             full_response = "I'm not sure how to respond. Can you rephrase?"
 
     # 4. Summarize and Append to History
-    # This part remains the same, but it is now inside the function
     summary = summarize_with_gemini(full_response)
     st.session_state.history.append(("You", user_input))
     st.session_state.history.append(("Bot", {"summary": summary, "full": full_response}))
