@@ -1,0 +1,65 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+
+# =========================
+# Virtual Environment
+# =========================
+venv/
+.env/
+.env.local/
+
+# =========================
+# Streamlit
+# =========================
+.streamlit/
+.streamlit/secrets.toml
+
+# =========================
+# Machine Learning / Large Files
+# =========================
+*.h5
+*.pkl
+*.pt
+*.bin
+*.joblib
+*.ckpt
+*.index
+*.data*
+*.npz
+
+models/
+model/
+embeddings/
+checkpoints/
+faiss_index/
+saved_models/
+
+# =========================
+# Data (if large)
+# =========================
+data/*.csv
+data/*.json
+data/*.xml
+
+# =========================
+# Logs & Cache
+# =========================
+logs/
+*.log
+
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
