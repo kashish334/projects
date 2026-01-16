@@ -5,7 +5,7 @@ The chatbot uses NLP and similarity search to provide medical information based 
 
 This project is built with Streamlit and deployed on Streamlit Community Cloud.
 
-Live app: [Medical Q&A Chatbot](https://medicalinfochat.streamlit.app/)
+Live app: [Medical Q&A Chatbot](https://madicalinfochat.streamlit.app/)
 
 ## Features
 - Uses MedQuAD dataset for high-quality medical Q&A
